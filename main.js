@@ -3,38 +3,77 @@ const listObj = {
 	"make a bed": "Done",
 	"write a post": "To Do",
 };
+
+const statusObj = {
+  DONE: "Done",
+  TODO: "To Do",
+  IN_PROGRESS: "In Progress",
+};
+
+function examination (task) {
+  if (!task) console.log('Вы не ввели задание.');
+}
+
 function changeStatus(task, status) {
-	return Object.assign(listObj, { [task]: status });
+  examination(task);
+  if (
+    status !=statusObj.DONE && 
+    status !=statusObj.TODO && 
+    status !=statusObj.IN_PROGRESS
+    ) 
+    console.log('Вы ввели не верный статуc');
+    else listObj[task] = status;
 }
+
 function addTask(task) {
-	return Object.assign(listObj, { [task]: "To Do" });
+  examination(task);
+  listObj[task] = statusObj.TODO;
 }
+
 function deleteTask(task) {
-	return Object.assign(listObj, delete listObj[task]);
+  examination(task);
+  if (task in listObj) {
+    delete listObj[task];
+  } else console.log('Такого задания нет в списке.');
 }
-function showList() {
-	console.log('To Do:' );
-	for (let key in listObj) {
-		if (listObj[key] === 'To Do') {
-			console.log(`\t${key}`)
-		}
-	}
-	console.log('In Progress:' );
-	for (let key in listObj) {
-		if (listObj[key] == 'In Progress') {
-			console.log(`\t${key}`)
-		}
-	}
-	console.log('Done:' );
-	for (let key in listObj) {
-		if (listObj[key] === 'Done') {
-			console.log(`\t${key}`)
-		}
-	}
+
+function showList () {
+  let count;
+    console.log(`${statusObj.TODO}:`);
+    count = 0;
+    for ( let key in listObj ) {
+      if (listObj[key] == statusObj.TODO) {
+        console.log(`\t${key}`);
+        count++;
+      }
+    }
+    if (count===0) console.log(`\t---`);
+    
+    console.log(`${statusObj.IN_PROGRESS}:`);
+    count = 0;
+    for ( let key in listObj ) {
+      if (listObj[key] == statusObj.IN_PROGRESS) {
+        count++;
+        console.log(`\t${key}`);
+      }
+    }
+    if (count===0) console.log(`\t---`);
+    
+    console.log(`${statusObj.DONE}:`);
+    count = 0;
+    for ( let key in listObj ) {
+      if (listObj[key] == statusObj.DONE) {
+        count++;
+        console.log(`\t${key}`);
+      }
+    }
+    if (count===0) console.log(`\t---`);
 }
+
+
 addTask('lunch');
 addTask('lerning');
 addTask('runing');
-changeStatus('lunch','In Progress')
-changeStatus('lerning','Done')
+changeStatus('lunch','In Progress');
+changeStatus('lerning','Done');
 showList();
