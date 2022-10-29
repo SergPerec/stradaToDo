@@ -1,79 +1,57 @@
-const listObj = {
-	"create a new practice task": "In Progress",
-	"make a bed": "Done",
-	"write a post": "To Do",
-};
+const list = [
+  { name: 'create a post', status: 'In progress', priority: 'low' },
+  { name: 'test', status: 'Done', priority: 'high' },
+];
 
-const statusObj = {
+const statusList = {
   DONE: "Done",
   TODO: "To Do",
-  IN_PROGRESS: "In Progress",
+  IN_PROGRESS: "In progress",
 };
 
-function examination (task) {
+function examination(task) {
   if (!task) console.log('Вы не ввели задание.');
-}
+};
 
-function changeStatus(task, status) {
-  examination(task);
-  if (
-    status !=statusObj.DONE && 
-    status !=statusObj.TODO && 
-    status !=statusObj.IN_PROGRESS
-    ) 
-    console.log('Вы ввели не верный статуc');
-    else listObj[task] = status;
-}
+function changeStatus(name, status) {
+  let person = list.find(item => item.name === name);
+  person.status = status;
+};
 
-function addTask(task) {
-  examination(task);
-  listObj[task] = statusObj.TODO;
-}
+function addTask(task, priorety) {
+  list.push(
+    { name: task, status: statusList.IN_PROGRESS, priorety: priorety }
+  );
+};
 
 function deleteTask(task) {
-  examination(task);
-  if (task in listObj) {
-    delete listObj[task];
-  } else console.log('Такого задания нет в списке.');
+  const index = list.findIndex(person => person.name === task);
+  if (index !== -1) {
+    list.splice(index, 1);
+  }
 }
 
-function showList () {
-  let count;
-    console.log(`${statusObj.TODO}:`);
-    count = 0;
-    for ( let key in listObj ) {
-      if (listObj[key] == statusObj.TODO) {
-        console.log(`\t${key}`);
-        count++;
-      }
-    }
-    if (count===0) console.log(`\t---`);
-    
-    console.log(`${statusObj.IN_PROGRESS}:`);
-    count = 0;
-    for ( let key in listObj ) {
-      if (listObj[key] == statusObj.IN_PROGRESS) {
-        count++;
-        console.log(`\t${key}`);
-      }
-    }
-    if (count===0) console.log(`\t---`);
-    
-    console.log(`${statusObj.DONE}:`);
-    count = 0;
-    for ( let key in listObj ) {
-      if (listObj[key] == statusObj.DONE) {
-        count++;
-        console.log(`\t${key}`);
-      }
-    }
-    if (count===0) console.log(`\t---`);
+function showList() {
+  console.log(`${statusList.TODO}:`);
+  let person = list.filter(person => person.status === statusList.TODO);
+  if (person.length == 0) console.log(`\t---`);
+  person.forEach(person => console.log('\t' + person.name));
+  
+  console.log(`${statusList.IN_PROGRESS}:`);
+  person = list.filter(person => person.status === statusList.IN_PROGRESS);
+  if (person.length == 0) console.log(`\t---`);
+  person.forEach(person => console.log('\t' + person.name));
+  
+  console.log(`${statusList.DONE}:`);
+  person = list.filter(person => person.status === statusList.DONE);
+  if (person.length == 0) console.log(`\t---`);
+  person.forEach(person => console.log('\t' + person.name));
 }
-
 
 addTask('lunch');
 addTask('lerning');
 addTask('runing');
-changeStatus('lunch','In Progress');
-changeStatus('lerning','Done');
+changeStatus('lunch', 'In progress');
+changeStatus('lerning', 'Done');
+deleteTask('test')
 showList();
