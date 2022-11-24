@@ -1,0 +1,58 @@
+.task {
+  border: 1px solid grey;
+  margin-bottom: 8px;
+  padding: 14px 12px 14px 4px;
+  position: relative;
+  border-radius: 6px;
+  padding-right: 30px;
+}
+
+.input-task-create {
+  border: 1px solid #989898;
+  min-width: 97%;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.09px;
+  padding: 12px 0 12px 12px;
+  border-radius: 6px;
+}
+
+.task-text {
+  padding-right: 20px;
+}
+
+.container {
+  width: 476px;
+  padding: 25px 8px;
+  border: 1px solid grey;
+  background: #cdcbd7;
+  margin: auto; 
+  border-radius: 10px;
+}
+
+body {
+  background: #a4a0b5;
+}
+
+h2 {
+  text-align: center;
+}
+
+.add-task {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 38px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.remove-task {
+  transform: rotate(45deg);
+}

@@ -1,57 +1,101 @@
-const list = [
-  { name: 'create a post', status: 'In progress', priority: 'low' },
-  { name: 'test', status: 'Done', priority: 'high' },
-];
+let list = [];
+const STATUS = {
+  DONE: 'done',
+  TODO: 'todo',
+} 
+const PRIORITY = {
+  HIGH: 'high',
+  LOW: 'low',
+}
 
-const statusList = {
-  DONE: "Done",
-  TODO: "To Do",
-  IN_PROGRESS: "In progress",
-};
+function addTask(name, priority) {
+  list.push({name: name, status: STATUS.DONE, priority});
+}
 
-function examination(task) {
-  if (!task) console.log('Вы не ввели задание.');
-};
+function deleteTask(name) {
+  let deleteTask = list.findIndex(el => el.name === name);
+  list.splice(deleteTask, 1)
+}
 
-function changeStatus(name, status) {
-  let person = list.find(item => item.name === name);
-  person.status = status;
-};
-
-function addTask(task, priorety) {
-  list.push(
-    { name: task, status: statusList.IN_PROGRESS, priorety: priorety }
-  );
-};
-
-function deleteTask(task) {
-  const index = list.findIndex(person => person.name === task);
-  if (index !== -1) {
-    list.splice(index, 1);
+function changeStatus(name) {
+  let item = list.find(el => el.name === name);
+  if (item.status === 'done') {
+    item.status = STATUS.TODO
+  } else {
+    item.status = STATUS.DONE
   }
 }
 
-function showList() {
-  console.log(`${statusList.TODO}:`);
-  let person = list.filter(person => person.status === statusList.TODO);
-  if (person.length == 0) console.log(`\t---`);
-  person.forEach(person => console.log('\t' + person.name));
-  
-  console.log(`${statusList.IN_PROGRESS}:`);
-  person = list.filter(person => person.status === statusList.IN_PROGRESS);
-  if (person.length == 0) console.log(`\t---`);
-  person.forEach(person => console.log('\t' + person.name));
-  
-  console.log(`${statusList.DONE}:`);
-  person = list.filter(person => person.status === statusList.DONE);
-  if (person.length == 0) console.log(`\t---`);
-  person.forEach(person => console.log('\t' + person.name));
+let forms  = document.querySelectorAll("form.add-task");
+forms.forEach(function(el) { 
+    el.addEventListener("submit", addTaskDom)
+});
+
+function addTaskDom(el) {
+    el.preventDefault();
+    let input = el.target.querySelector(".input-task-create");
+    let name = input.value;
+    if (!name) return input.value = '';
+    let priority = input.closest(".add-task").previousElementSibling.className;
+    addTask(name, priority);
+    el.target.reset();
+    render()
 }
 
-addTask('lunch');
-addTask('lerning');
-addTask('runing');
-changeStatus('lunch', 'In progress');
-changeStatus('lerning', 'Done');
-deleteTask('test')
-showList();
+function changeStatusDom() {
+  let nameTask = this.nextElementSibling.textContent;
+  changeStatus(nameTask);
+  render()
+}
+
+function deleteTaskDom() {
+  let nameTask = this.previousElementSibling.textContent;
+  deleteTask(nameTask);
+  render()
+}
+
+function render() {
+  let allTask = document.querySelectorAll('.task');
+  for (let task of allTask) {
+    task.remove()
+  }
+  list.forEach(function(el) {
+    let div = document.createElement('div');
+    div.className = 'task';
+    
+    let input = document.createElement('input');
+    input.type = 'checkbox';
+    if (el.status === STATUS.TODO) {input.setAttribute("checked",true)};
+    input.addEventListener("change", changeStatusDom);
+    
+    let label = document.createElement('label');
+    label.className = "task-text";
+    label.textContent = el.name;
+    
+    let button = document.createElement("button");
+    button.type = "button";
+    button.className = "button remove-task";
+    button.textContent = "+";
+    button.addEventListener("click", deleteTaskDom);
+    
+    div.append(input);
+    div.append(label);
+    div.append(button);
+    let placeTask = document.querySelector(`.${el.priority}`).nextElementSibling;
+    placeTask.after(div);
+    console.log(list)
+  })
+}
+
+// function addTask() {
+// 	let label = document.querySelector('.todo__label');
+// 	let name = label.textContent;
+//   arrList.push(
+//     { name: name,}
+//   );
+// }
+
+
+
+
+
