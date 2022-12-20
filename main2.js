@@ -8,8 +8,15 @@ const PRIORITY = {
   LOW: 'low',
 }
 
+function Task(name, priority) {
+	this.name = name;
+	this.status = STATUS.DONE;
+	this.priority = priority;
+}
+
 function addTask(name, priority) {
-  list.push({name: name, status: STATUS.DONE, priority});
+	let tasks = new Task(name, priority)
+  list.push(tasks);
 }
 
 function deleteTask(name) {
@@ -86,8 +93,3 @@ function render() {
     console.log(list)
   })
 }
-
-
-
-
-
